@@ -1,13 +1,29 @@
 import os
 import sqlite3
+import mimetypes
 import database
-from flask import Flask, request, render_template, url_for, jsonify, send_from_directory, session, redirect, flash
+from flask import Flask, request, render_template, url_for, jsonify, send_from_directory, session, redirect, flash, abort
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 from functools import wraps
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'a-very-secret-and-random-string-that-you-should-change'
-app.config['UPLOAD_FOLDER'] = 'uploads'
+# SECURITY: Use environment variable for SECRET_KEY
+# Generate a secret key with: python -c "import secrets; print(secrets.token_hex(32))"
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-CHANGE-THIS-IN-PRODUCTION-' + os.urandom(24).hex())
+app.config['UPLOAD_FOLDER'] = os.environ.get('UPLOAD_FOLDER', 'uploads')
+app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_UPLOAD_SIZE_MB', 10)) * 1024 * 1024  # Default 10MB
+
+# Session security settings
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', 'False') == 'True'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['PERMANENT_SESSION_LIFETIME'] = 7200  # 2 hours
+
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 database.init_db()
 
@@ -18,6 +34,25 @@ def login_required(f):
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
+
+# Security headers
+@app.after_request
+def set_security_headers(response):
+    """Add security headers to all responses."""
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    # Only enable HSTS if using HTTPS
+    if request.is_secure:
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    return response
+
+# File upload validation
+ALLOWED_EXTENSIONS = {'pdf'}
+
+def allowed_file(filename):
+    """Check if file has an allowed extension."""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def terminal_ui():
@@ -58,12 +93,25 @@ def upload_file():
     if 'file' not in request.files: return "Missing file part", 400
     file = request.files['file']
     if file.filename == '': return "Invalid file", 400
+    
+    # SECURITY: Validate file type server-side
+    if not allowed_file(file.filename):
+        return "Only PDF files are allowed", 400
+    
+    # SECURITY: Verify MIME type
+    mime_type = mimetypes.guess_type(file.filename)[0]
+    if mime_type != 'application/pdf':
+        return "Invalid file type. Only PDF files are allowed.", 400
+    
     data = { "class_name": request.form.get('class', ''), "subject": request.form.get('subject', ''), "semester": request.form.get('semester', ''), "exam_year": request.form.get('exam_year', ''), "exam_type": request.form.get('exam_type', ''), "paper_code": request.form.get('paper_code', 'N/A'), "exam_number": request.form.get('exam_number', 'N/A'), "medium": request.form.get('medium', ''), "university": request.form.get('university', 'N/A'), "time": request.form.get('time', 'N/A'), "max_marks": request.form.get('max_marks', 'N/A'), "uploader_name": request.form.get('admin_name', 'Unknown') }
     required_fields = ['class_name', 'subject', 'semester', 'exam_year', 'exam_type', 'medium', 'uploader_name']
     if not all(data[key] for key in required_fields): return "A required field is empty", 400
+    
+    # SECURITY: Use secure_filename to prevent path traversal
     unique_prefix = str(int(os.times().system * 1000))
     filename = secure_filename(f"{unique_prefix}_{file.filename}")
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    
     file.save(filepath)
     try:
         conn = sqlite3.connect('papers.db')
@@ -73,7 +121,8 @@ def upload_file():
         conn.close()
     except Exception as e:
         print(f"Database Error: {e}")
-        os.remove(filepath)
+        if os.path.exists(filepath):
+            os.remove(filepath)
         return "Database error", 500
     return "Success", 200
 
@@ -114,7 +163,29 @@ def get_papers():
 
 @app.route('/uploads/<path:filename>')
 def get_uploaded_file(filename):
+    """
+    Serve uploaded files with path traversal protection.
+    SECURITY: Validate filename to prevent directory traversal attacks.
+    """
+    # Prevent path traversal
+    if '..' in filename or filename.startswith('/') or filename.startswith('\\'):
+        abort(404)
+    
+    # Additional security: ensure the file is within the upload folder
+    safe_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    upload_folder_abs = os.path.abspath(app.config['UPLOAD_FOLDER'])
+    
+    if not safe_path.startswith(upload_folder_abs):
+        abort(404)
+    
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # SECURITY: Never run with debug=True in production
+    # Set FLASK_DEBUG environment variable to enable debug mode in development
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    
+    if debug_mode:
+        print("WARNING: Running in DEBUG mode. Never use this in production!")
+    
+    app.run(debug=debug_mode)
