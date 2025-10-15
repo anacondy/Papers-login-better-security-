@@ -29,6 +29,47 @@ Based on comprehensive security assessment:
 
 See [SECURITY_ASSESSMENT.md](SECURITY_ASSESSMENT.md) for detailed analysis.
 
+## 🌐 GitHub Pages Deployment
+
+This repository includes a static version of the application that can be deployed on GitHub Pages.
+
+### 📦 What's Included
+
+- `index.html` - Static version of the main page in the root directory
+- `static/` - CSS and JavaScript files
+- `.nojekyll` - Ensures GitHub Pages serves all files correctly
+
+### 🚀 How to Deploy on GitHub Pages
+
+1. **Go to your repository settings:**
+   - Navigate to `Settings` → `Pages` in your GitHub repository
+
+2. **Configure GitHub Pages:**
+   - **Source**: Select `Deploy from a branch`
+   - **Branch**: Choose `main` (or `copilot/make-site-live-on-pages`)
+   - **Folder**: Select `/ (root)`
+   - Click `Save`
+
+3. **Wait for deployment:**
+   - GitHub will automatically build and deploy your site
+   - This usually takes 1-2 minutes
+   - You'll see a green checkmark when it's ready
+
+4. **Access your site:**
+   - Your site will be available at: `https://<your-username>.github.io/<repository-name>/`
+   - Example: `https://anacondy.github.io/Papers-login-better-security-/`
+
+### 📸 Preview
+
+![GitHub Pages Preview](https://github.com/user-attachments/assets/f159bb4f-370d-4ff3-8234-1723e7e2744d)
+
+### ⚠️ Important Notes
+
+- The static version displays the terminal-style interface
+- Backend features (search, database) require the Flask application to be running
+- For full functionality, deploy the Flask app to a platform like Heroku, Railway, or AWS
+- The GitHub Pages version is perfect for showcasing the UI/UX
+
 ## 🚀 Quick Start
 
 ### Prerequisites
