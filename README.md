@@ -2,6 +2,10 @@
 
 A secure web application for accessing and searching previous year academic papers with a terminal-style interface.
 
+## 🎥 Video Demo
+
+Check out our [YouTube video demo](YOUTUBE_VIDEO_DESCRIPTION.md) to see the portal in action! The file also contains ready-to-use descriptions for YouTube shorts/videos.
+
 ## 🔒 Security Features
 
 This repository has been enhanced with enterprise-grade security features:
