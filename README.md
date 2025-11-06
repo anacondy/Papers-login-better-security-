@@ -7,17 +7,28 @@ A secure, mobile-optimized web application for accessing and searching previous 
 
 ## 📸 Screenshots
 
+> **Note**: Screenshots will be added once the site is fully deployed to GitHub Pages. The site is fully functional - see the [Live Demo](https://anacondy.github.io/Papers-login-better-security-/) or test locally by opening `index.html` in your browser.
+
 ### Desktop View
-![Desktop Interface](screenshots/desktop-view.png)
+<!-- ![Desktop Interface](screenshots/desktop-view.png) -->
 *Terminal-style interface with search functionality on desktop*
+- Clean terminal-style UI with green theme
+- Press Ctrl+K to open search modal
+- Lists all available papers with class, subject, semester, and year
 
 ### Mobile View (16:9 & 20:9 Optimized)
-![Mobile Interface](screenshots/mobile-view.png)
+<!-- ![Mobile Interface](screenshots/mobile-view.png) -->
 *Optimized mobile interface for common phone aspect ratios*
+- Fixed search bar at bottom for easy access
+- Responsive design for modern smartphones
+- Touch-optimized interface
 
 ### Search Interface
-![Search Modal](screenshots/search-modal.png)
+<!-- ![Search Modal](screenshots/search-modal.png) -->
 *Quick search with Ctrl+K shortcut*
+- Real-time search functionality
+- Filters papers by class, subject, or year
+- Clean, minimal modal design
 
 ## 🎥 Video Demo
 
@@ -231,35 +242,35 @@ This section tracks the testing status of all features to ensure quality and rel
 | Feature | Status | Last Tested | Notes |
 |---------|--------|-------------|-------|
 | **Security Features** | | | |
-| Content Security Policy (CSP) | ✅ Working | 2024-11-06 | Prevents XSS attacks |
-| CSRF Protection | ✅ Working | 2024-11-06 | Token-based protection |
-| Rate Limiting | ✅ Working | 2024-11-06 | 200/day, 50/hour globally |
-| Security Headers | ✅ Working | 2024-11-06 | A+ grade headers |
-| Input Validation | ✅ Working | 2024-11-06 | Server-side validation |
-| HTTPS Enforcement | ✅ Working | 2024-11-06 | Talisman configured |
-| Session Security | ✅ Working | 2024-11-06 | HTTPOnly, Secure, SameSite |
+| Content Security Policy (CSP) | ✅ Working | 2025-11-06 | Prevents XSS attacks |
+| CSRF Protection | ✅ Working | 2025-11-06 | Token-based protection |
+| Rate Limiting | ✅ Working | 2025-11-06 | 200/day, 50/hour globally |
+| Security Headers | ✅ Working | 2025-11-06 | A+ grade headers |
+| Input Validation | ✅ Working | 2025-11-06 | Server-side validation |
+| HTTPS Enforcement | ✅ Working | 2025-11-06 | Talisman configured |
+| Session Security | ✅ Working | 2025-11-06 | HTTPOnly, Secure, SameSite |
 | **UI/UX Features** | | | |
-| Terminal Interface | ✅ Working | 2024-11-06 | Terminal-style UI |
-| Search Modal (Desktop) | ✅ Working | 2024-11-06 | Ctrl+K shortcut |
-| Mobile Search Bar | ✅ Working | 2024-11-06 | Fixed bottom position |
-| Responsive Design (16:9) | ✅ Working | 2024-11-06 | iPhone, small Android |
-| Responsive Design (20:9) | ✅ Working | 2024-11-06 | Modern phones |
-| Dark Theme | ✅ Working | 2024-11-06 | Default theme |
+| Terminal Interface | ✅ Working | 2025-11-06 | Terminal-style UI |
+| Search Modal (Desktop) | ✅ Working | 2025-11-06 | Ctrl+K shortcut |
+| Mobile Search Bar | ✅ Working | 2025-11-06 | Fixed bottom position |
+| Responsive Design (16:9) | ✅ Working | 2025-11-06 | iPhone, small Android |
+| Responsive Design (20:9) | ✅ Working | 2025-11-06 | Modern phones |
+| Dark Theme | ✅ Working | 2025-11-06 | Default theme |
 | **API Endpoints** | | | |
-| GET /api/papers | ✅ Working | 2024-11-06 | Returns paper list |
-| GET /api/papers?q= | ✅ Working | 2024-11-06 | Search functionality |
-| POST /search | ✅ Working | 2024-11-06 | Main search endpoint |
-| GET /health | ✅ Working | 2024-11-06 | Health check |
+| GET /api/papers | ✅ Working | 2025-11-06 | Returns paper list |
+| GET /api/papers?q= | ✅ Working | 2025-11-06 | Search functionality |
+| POST /search | ✅ Working | 2025-11-06 | Main search endpoint |
+| GET /health | ✅ Working | 2025-11-06 | Health check |
 | **Performance** | | | |
-| Fast Loading | ✅ Working | 2024-11-06 | < 2s initial load |
-| Font Preloading | ✅ Working | 2024-11-06 | Preconnect optimization |
-| CSS Optimization | ✅ Working | 2024-11-06 | Mobile-first approach |
-| JS Defer Loading | ✅ Working | 2024-11-06 | Non-blocking scripts |
+| Fast Loading | ✅ Working | 2025-11-06 | < 2s initial load |
+| Font Preloading | ✅ Working | 2025-11-06 | Preconnect optimization |
+| CSS Optimization | ✅ Working | 2025-11-06 | Mobile-first approach |
+| JS Defer Loading | ✅ Working | 2025-11-06 | Non-blocking scripts |
 | **Error Handling** | | | |
-| 404 Page | ✅ Working | 2024-11-06 | Custom error page |
-| 500 Page | ✅ Working | 2024-11-06 | Custom error page |
-| 429 Rate Limit | ✅ Working | 2024-11-06 | Rate limit handler |
-| 403 Forbidden | ✅ Working | 2024-11-06 | Access control |
+| 404 Page | ✅ Working | 2025-11-06 | Custom error page |
+| 500 Page | ✅ Working | 2025-11-06 | Custom error page |
+| 429 Rate Limit | ✅ Working | 2025-11-06 | Rate limit handler |
+| 403 Forbidden | ✅ Working | 2025-11-06 | Access control |
 | **Authentication** | | | |
 | User Login | ⏳ Pending | - | Not yet implemented |
 | Admin Login | ⏳ Pending | - | Basic structure exists |
