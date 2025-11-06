@@ -400,7 +400,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 ## 📧 Security Contact
 
 If you discover a security vulnerability, please email:
-[Your security email here]
+[anujmeena2025@gmail.com]
 
 **Do NOT** open a public issue for security vulnerabilities.
 
