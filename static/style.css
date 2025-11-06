@@ -378,7 +378,7 @@ body.is-mobile #search-modal {
 @media only screen and (device-width: 375px) and (device-height: 812px) {
     body {
         padding: 0.875rem;
-        padding-bottom: 100px; /* Account for notch area */
+        padding-bottom: calc(80px + env(safe-area-inset-bottom, 0));
     }
     
     #mobile-search-container {
@@ -391,7 +391,7 @@ body.is-mobile #search-modal {
 @media only screen and (device-width: 390px) and (device-height: 844px) {
     body {
         padding: 1rem;
-        padding-bottom: 100px;
+        padding-bottom: calc(80px + env(safe-area-inset-bottom, 0));
     }
     
     #mobile-search-container {

@@ -13,6 +13,9 @@ from flask_limiter.util import get_remote_address
 from flask_talisman import Talisman
 import secrets
 
+# Import mock data (replace with actual database in production)
+from mock_data import get_all_papers, search_papers
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -287,7 +290,7 @@ def service_worker():
 
 @app.route('/api/papers', methods=['GET'])
 @limiter.limit("30 per minute")
-def get_papers():
+def get_papers_api():
     """
     Get all papers or search papers
     
@@ -300,46 +303,17 @@ def get_papers():
     try:
         query = request.args.get('q', '').strip()
         
-        # Mock data for now - replace with actual database query
-        papers = [
-            {
-                'class': 'MCA',
-                'subject': 'Data Structures',
-                'semester': 1,
-                'exam_year': 2024,
-                'url': '#'
-            },
-            {
-                'class': 'MCA',
-                'subject': 'Computer Networks',
-                'semester': 2,
-                'exam_year': 2023,
-                'url': '#'
-            },
-            {
-                'class': 'BCA',
-                'subject': 'Programming in C',
-                'semester': 1,
-                'exam_year': 2024,
-                'url': '#'
-            }
-        ]
-        
-        # Filter papers if search query provided
+        # Get papers from mock data (replace with actual database query in production)
         if query:
             is_valid, result = validate_search_query(query)
             if not is_valid:
                 return jsonify(error=result), 400
             
-            query_lower = result.lower()
-            papers = [
-                p for p in papers 
-                if query_lower in p['subject'].lower() 
-                or query_lower in p['class'].lower()
-                or query_lower in str(p['exam_year'])
-            ]
+            papers = search_papers(result)
+        else:
+            papers = get_all_papers()
         
-        logger.info(f"Papers API called with query: {query}, results: {len(papers)}")
+        logger.info(f"Papers API called with query: '{query}', results: {len(papers)}")
         return jsonify(papers), 200
         
     except Exception as e:

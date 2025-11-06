@@ -1,9 +1,12 @@
 // Service Worker for PWA support and offline caching
-const CACHE_NAME = 'papers-portal-v1';
+const CACHE_NAME = 'papers-portal-v1.0.0'; // Version should be updated with each deployment
 const urlsToCache = [
   '/',
   '/static/style.css',
-  '/static/script.js',
+  '/static/script.js'
+];
+
+const externalUrls = [
   'https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap'
 ];
 
@@ -12,14 +15,24 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache.map(url => {
-          // Handle external URLs properly
-          return new Request(url, { mode: 'no-cors' });
-        }));
+        console.log('Opened cache:', CACHE_NAME);
+        
+        // Cache local resources with default mode
+        const localCachePromises = cache.addAll(urlsToCache);
+        
+        // Cache external resources with no-cors mode
+        const externalCachePromises = Promise.all(
+          externalUrls.map(url => {
+            return fetch(new Request(url, { mode: 'no-cors' }))
+              .then(response => cache.put(url, response))
+              .catch(error => console.warn('Failed to cache external resource:', url, error));
+          })
+        );
+        
+        return Promise.all([localCachePromises, externalCachePromises]);
       })
       .catch(error => {
-        console.error('Cache failed:', error);
+        console.error('Service worker installation failed:', error);
       })
   );
 });
