@@ -13,6 +13,9 @@ from flask_limiter.util import get_remote_address
 from flask_talisman import Talisman
 import secrets
 
+# Import mock data (replace with actual database in production)
+from mock_data import get_all_papers, search_papers
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -94,12 +97,14 @@ csp = {
 }
 
 # Talisman for HTTPS enforcement and security headers
-# In development, you might want to set force_https=False
+# Configure based on environment
+is_production = os.environ.get('FLASK_ENV') == 'production'
+
 talisman = Talisman(
     app,
-    force_https=True,  # Set to False in development without HTTPS
-    strict_transport_security=True,
-    strict_transport_security_max_age=31536000,  # 1 year
+    force_https=is_production,  # Only force HTTPS in production
+    strict_transport_security=is_production,
+    strict_transport_security_max_age=31536000 if is_production else 0,
     content_security_policy=csp,
     content_security_policy_nonce_in=['script-src'],
     referrer_policy='strict-origin-when-cross-origin',
@@ -135,6 +140,16 @@ def set_additional_security_headers(response):
         'geolocation=(), microphone=(), camera=(), '
         'payment=(), usb=(), magnetometer=(), gyroscope=()'
     )
+    
+    # Cache control for static assets
+    if request.path.startswith('/static/'):
+        # Cache static files for 1 year
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    elif request.path in ['/', '/search', '/api/papers']:
+        # Don't cache API and dynamic routes
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, private'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
     
     return response
 
@@ -259,6 +274,52 @@ def health():
     """Health check endpoint"""
     return jsonify(status="healthy"), 200
 
+@app.route('/manifest.json')
+@limiter.exempt
+def manifest():
+    """Serve PWA manifest"""
+    return app.send_static_file('manifest.json')
+
+@app.route('/sw.js')
+@limiter.exempt
+def service_worker():
+    """Serve service worker"""
+    response = app.send_static_file('sw.js')
+    response.headers['Service-Worker-Allowed'] = '/'
+    return response
+
+@app.route('/api/papers', methods=['GET'])
+@limiter.limit("30 per minute")
+def get_papers_api():
+    """
+    Get all papers or search papers
+    
+    Query parameters:
+        q (str): Optional search query
+    
+    Returns:
+        JSON response with papers list
+    """
+    try:
+        query = request.args.get('q', '').strip()
+        
+        # Get papers from mock data (replace with actual database query in production)
+        if query:
+            is_valid, result = validate_search_query(query)
+            if not is_valid:
+                return jsonify(error=result), 400
+            
+            papers = search_papers(result)
+        else:
+            papers = get_all_papers()
+        
+        logger.info(f"Papers API called with query: '{query}', results: {len(papers)}")
+        return jsonify(papers), 200
+        
+    except Exception as e:
+        logger.error(f"Papers API error: {e}")
+        return jsonify(error="An error occurred"), 500
+
 # ============================================================================
 # SECURITY UTILITIES
 # ============================================================================
@@ -291,8 +352,6 @@ if __name__ == '__main__':
     
     if debug_mode:
         logger.warning("Running in DEBUG mode - not suitable for production!")
-        # Disable HTTPS enforcement in development
-        talisman.force_https = False
     
     app.run(
         host='0.0.0.0',
