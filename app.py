@@ -271,6 +271,20 @@ def health():
     """Health check endpoint"""
     return jsonify(status="healthy"), 200
 
+@app.route('/manifest.json')
+@limiter.exempt
+def manifest():
+    """Serve PWA manifest"""
+    return app.send_static_file('manifest.json')
+
+@app.route('/sw.js')
+@limiter.exempt
+def service_worker():
+    """Serve service worker"""
+    response = app.send_static_file('sw.js')
+    response.headers['Service-Worker-Allowed'] = '/'
+    return response
+
 @app.route('/api/papers', methods=['GET'])
 @limiter.limit("30 per minute")
 def get_papers():

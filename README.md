@@ -1,6 +1,7 @@
 # Previous Year Papers Portal - Security Enhanced
 
-> 🌐 **Live Demo**: [https://anacondy.github.io/Papers-login-better-security-/](https://anacondy.github.io/Papers-login-better-security-/)
+> 🌐 **Live Demo**: [https://anacondy.github.io/Papers-login-better-security-/](https://anacondy.github.io/Papers-login-better-security-/)  
+> 📘 **Setup Guide**: See [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) for deployment instructions
 
 A secure, mobile-optimized web application for accessing and searching previous year academic papers with a terminal-style interface.
 
