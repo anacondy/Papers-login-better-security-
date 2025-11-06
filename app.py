@@ -138,6 +138,16 @@ def set_additional_security_headers(response):
         'payment=(), usb=(), magnetometer=(), gyroscope=()'
     )
     
+    # Cache control for static assets
+    if request.path.startswith('/static/'):
+        # Cache static files for 1 year
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    elif request.path in ['/', '/search', '/api/papers']:
+        # Don't cache API and dynamic routes
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, private'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+    
     return response
 
 # ============================================================================
