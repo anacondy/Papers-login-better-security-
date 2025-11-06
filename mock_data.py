@@ -9,56 +9,56 @@ MOCK_PAPERS = [
         'class': 'MCA',
         'subject': 'Data Structures',
         'semester': 1,
-        'exam_year': 2024,
+        'exam_year': 2025,
         'url': '#'
     },
     {
         'class': 'MCA',
         'subject': 'Computer Networks',
         'semester': 2,
-        'exam_year': 2023,
+        'exam_year': 2024,
         'url': '#'
     },
     {
         'class': 'BCA',
         'subject': 'Programming in C',
         'semester': 1,
-        'exam_year': 2024,
+        'exam_year': 2025,
         'url': '#'
     },
     {
         'class': 'BSc',
         'subject': 'Physics',
         'semester': 1,
-        'exam_year': 2024,
+        'exam_year': 2025,
         'url': '#'
     },
     {
         'class': 'BSc',
         'subject': 'Chemistry',
         'semester': 2,
-        'exam_year': 2023,
+        'exam_year': 2024,
         'url': '#'
     },
     {
         'class': 'BA',
         'subject': 'English Literature',
         'semester': 1,
-        'exam_year': 2024,
+        'exam_year': 2025,
         'url': '#'
     },
     {
         'class': 'BA',
         'subject': 'History',
         'semester': 3,
-        'exam_year': 2022,
+        'exam_year': 2023,
         'url': '#'
     },
     {
         'class': 'MCA',
         'subject': 'Database Management',
         'semester': 3,
-        'exam_year': 2023,
+        'exam_year': 2024,
         'url': '#'
     }
 ]
