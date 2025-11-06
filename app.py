@@ -94,12 +94,14 @@ csp = {
 }
 
 # Talisman for HTTPS enforcement and security headers
-# In development, you might want to set force_https=False
+# Configure based on environment
+is_production = os.environ.get('FLASK_ENV') == 'production'
+
 talisman = Talisman(
     app,
-    force_https=True,  # Set to False in development without HTTPS
-    strict_transport_security=True,
-    strict_transport_security_max_age=31536000,  # 1 year
+    force_https=is_production,  # Only force HTTPS in production
+    strict_transport_security=is_production,
+    strict_transport_security_max_age=31536000 if is_production else 0,
     content_security_policy=csp,
     content_security_policy_nonce_in=['script-src'],
     referrer_policy='strict-origin-when-cross-origin',
@@ -259,6 +261,67 @@ def health():
     """Health check endpoint"""
     return jsonify(status="healthy"), 200
 
+@app.route('/api/papers', methods=['GET'])
+@limiter.limit("30 per minute")
+def get_papers():
+    """
+    Get all papers or search papers
+    
+    Query parameters:
+        q (str): Optional search query
+    
+    Returns:
+        JSON response with papers list
+    """
+    try:
+        query = request.args.get('q', '').strip()
+        
+        # Mock data for now - replace with actual database query
+        papers = [
+            {
+                'class': 'MCA',
+                'subject': 'Data Structures',
+                'semester': 1,
+                'exam_year': 2024,
+                'url': '#'
+            },
+            {
+                'class': 'MCA',
+                'subject': 'Computer Networks',
+                'semester': 2,
+                'exam_year': 2023,
+                'url': '#'
+            },
+            {
+                'class': 'BCA',
+                'subject': 'Programming in C',
+                'semester': 1,
+                'exam_year': 2024,
+                'url': '#'
+            }
+        ]
+        
+        # Filter papers if search query provided
+        if query:
+            is_valid, result = validate_search_query(query)
+            if not is_valid:
+                return jsonify(error=result), 400
+            
+            query_lower = result.lower()
+            papers = [
+                p for p in papers 
+                if query_lower in p['subject'].lower() 
+                or query_lower in p['class'].lower()
+                or query_lower in str(p['exam_year'])
+            ]
+        
+        logger.info(f"Papers API called with query: {query}, results: {len(papers)}")
+        return jsonify(papers), 200
+        
+    except Exception as e:
+        logger.error(f"Papers API error: {e}")
+        return jsonify(error="An error occurred"), 500
+
 # ============================================================================
 # SECURITY UTILITIES
 # ============================================================================
@@ -291,8 +354,6 @@ if __name__ == '__main__':
     
     if debug_mode:
         logger.warning("Running in DEBUG mode - not suitable for production!")
-        # Disable HTTPS enforcement in development
-        talisman.force_https = False
     
     app.run(
         host='0.0.0.0',
