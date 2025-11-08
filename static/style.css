@@ -19,7 +19,7 @@ body {
     color: var(--text-color);
     font-family: var(--font-family);
     margin: 0;
-    padding: 2rem;
+    padding: 1rem;
     line-height: 1.6;
     min-height: 100vh;
     min-height: -webkit-fill-available;

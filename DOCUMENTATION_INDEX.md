@@ -29,6 +29,7 @@ Welcome to the Paper Terminal Archive documentation. This index will guide you t
 |----------|---------|------|----------|
 | [SECURITY_SUMMARY.md](SECURITY_SUMMARY.md) | Quick security overview | 5 min | Everyone |
 | [README.md](README.md) | Installation & usage guide | 10 min | Everyone |
+| [YOUTUBE_VIDEO_DESCRIPTION.md](YOUTUBE_VIDEO_DESCRIPTION.md) | Video demo descriptions | 2 min | Content creators |
 
 ### Detailed Security Analysis
 
