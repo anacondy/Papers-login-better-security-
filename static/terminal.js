@@ -310,20 +310,104 @@
             }
         });
 
-        // Keep focus on input
-        document.addEventListener('click', () => {
+        // Keep focus on input (desktop only)
+        if (!isMobileDevice()) {
+            document.addEventListener('click', () => {
+                terminalInput.focus();
+            });
+        }
+
+        // Initial focus (desktop only)
+        if (!isMobileDevice()) {
             terminalInput.focus();
+        }
+    }
+
+    /**
+     * Initialize mobile search bar
+     */
+    function initMobileSearch() {
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        
+        if (!mobileSearchInput) return;
+
+        // Handle search on Enter
+        mobileSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = mobileSearchInput.value.trim();
+                if (query) {
+                    // Add to terminal output
+                    addLine(`<span class="prompt">guest@papers:~$</span> <span class="command">search ${escapeHtml(query)}</span>`);
+                    searchPapers(query);
+                    // Scroll to show results
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }
+            }
         });
 
-        // Initial focus
-        terminalInput.focus();
+        // Real-time suggestions (optional enhancement)
+        let searchTimeout;
+        mobileSearchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+            
+            // Only show suggestions if query is at least 2 characters
+            if (query.length >= 2) {
+                searchTimeout = setTimeout(() => {
+                    // Could implement autocomplete suggestions here
+                }, 300);
+            }
+        });
+    }
+
+    /**
+     * Detect mobile device
+     */
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (window.innerWidth <= 768);
+    }
+
+    /**
+     * Apply mobile optimizations
+     */
+    function applyMobileOptimizations() {
+        if (isMobileDevice()) {
+            document.body.classList.add('is-mobile');
+            
+            // Adjust viewport height for mobile browsers
+            const setViewportHeight = () => {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            
+            setViewportHeight();
+            window.addEventListener('resize', setViewportHeight);
+            window.addEventListener('orientationchange', setViewportHeight);
+            
+            // Prevent double-tap zoom on mobile
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', (e) => {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
+        }
     }
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTerminal);
+        document.addEventListener('DOMContentLoaded', () => {
+            applyMobileOptimizations();
+            initTerminal();
+            initMobileSearch();
+        });
     } else {
+        applyMobileOptimizations();
         initTerminal();
+        initMobileSearch();
     }
 
 })();

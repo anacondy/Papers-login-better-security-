@@ -61,17 +61,20 @@ This repository includes a static version of the application that can be deploye
 
 ### 📸 Preview
 
-**Welcome Screen:**
+**Desktop View:**
 ![Welcome Screen](https://github.com/user-attachments/assets/889620b7-fa6e-409a-8c84-5ff6f3d3366a)
 
-**Interactive Terminal with Help Command:**
-![Help Command](https://github.com/user-attachments/assets/229cb40b-95ed-4083-9f6d-31b4d0f77c14)
+**Mobile View (16:9 Portrait):**
+![Mobile 16:9](https://github.com/user-attachments/assets/mobile-16-9-portrait)
 
-**List Papers Command:**
-![List Papers](https://github.com/user-attachments/assets/73ca09d0-7e6a-4c02-bfb5-48a9cec59753)
+**Mobile View (20:9 Portrait - Modern Smartphones):**
+![Mobile 20:9](https://github.com/user-attachments/assets/mobile-20-9-portrait)
 
-**Search Functionality:**
-![Search Papers](https://github.com/user-attachments/assets/eae45131-3653-42cc-baa9-c47f5a33b2a0)
+**Mobile Search in Action:**
+![Mobile Search](https://github.com/user-attachments/assets/mobile-search-results)
+
+**Mobile Landscape Mode:**
+![Mobile Landscape](https://github.com/user-attachments/assets/mobile-landscape)
 
 ### ✨ Interactive Features
 
@@ -93,15 +96,27 @@ The static GitHub Pages version now includes a **fully functional terminal inter
   - Real-time search filtering
   - Sample database with 10 papers across 5 subjects
   - Clickable paper links
-  - Mobile-responsive design
-  - Quick search modal (Ctrl+K)
+  - Mobile-responsive design with bottom search bar
+  - Quick search modal (Ctrl+K on desktop)
+
+- **Mobile Optimizations:**
+  - **Fixed bottom search bar** for easy access on mobile devices
+  - Optimized for **16:9 and 20:9 aspect ratios** (standard and modern smartphones)
+  - Responsive layout that adapts to portrait and landscape orientations
+  - Touch-friendly tap targets (min 44px for iOS compliance)
+  - Prevents zoom on input focus (iOS optimization)
+  - Safe area support for notched devices (iPhone X and newer)
+  - Smooth scrolling and performance optimizations
+  - Automatic mobile detection with device-specific styling
 
 ### ⚠️ Important Notes
 
 - The static version now includes a **fully functional terminal interface** with interactive commands
+- **Mobile-optimized** with fixed bottom search bar for 16:9 and 20:9 aspect ratios
 - Sample database included with Physics, Mathematics, Chemistry, Computer Science, and Biology papers
 - All terminal commands work client-side without requiring a backend
-- Search functionality filters papers in real-time
+- Search functionality filters papers in real-time on both desktop and mobile
+- Responsive design automatically adapts to device screen size and orientation
 - Backend features for actual file storage require the Flask application
 - For full functionality with real database, deploy the Flask app to Heroku, Railway, or AWS
 - The GitHub Pages version is perfect for showcasing the UI/UX and terminal interaction

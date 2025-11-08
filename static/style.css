@@ -2,11 +2,16 @@
     --font-family: 'Fira Code', monospace;
     --bg-color: #1a1a1a;
     --comment-color: #888888;
+    --mobile-bottom-bar-height: 70px;
 }
 
 .theme-green {
     --primary-color: #4CAF50;
     --text-color: #e0e0e0;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
@@ -16,18 +21,27 @@ body {
     margin: 0;
     padding: 2rem;
     line-height: 1.6;
-    box-sizing: border-box;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
 }
 
 /* Terminal styles */
 #terminal { 
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: 20px;
+}
+
+#output {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .line { 
     white-space: pre-wrap; 
-    min-height: 25px; 
+    min-height: 25px;
+    word-break: break-word;
 }
 
 .comment { 
@@ -167,48 +181,189 @@ a:hover {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 10px;
-    background-color: #111;
+    padding: 12px 15px;
+    background: linear-gradient(to bottom, rgba(17, 17, 17, 0.95), rgba(17, 17, 17, 1));
+    backdrop-filter: blur(10px);
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 1000;
+    border-top: 1px solid var(--primary-color);
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.5);
+    /* Safe area for notched devices */
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
 
 #mobile-search-input {
     width: 100%;
-    padding: 12px;
-    background-color: #333;
-    border: 1px solid var(--primary-color);
+    padding: 14px 16px;
+    background-color: #2a2a2a;
+    border: 2px solid var(--primary-color);
     color: var(--text-color);
     font-family: var(--font-family);
-    font-size: 1rem;
+    font-size: 16px; /* Prevents zoom on iOS */
     outline: none;
     box-sizing: border-box;
-    border-radius: 5px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    -webkit-appearance: none; /* Remove iOS default styling */
+}
+
+#mobile-search-input:focus {
+    background-color: #333;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+#mobile-search-input::placeholder {
+    color: var(--comment-color);
+    opacity: 0.8;
 }
 
 /* When the body has the 'is-mobile' class (set by JS), apply these styles */
 body.is-mobile {
-    padding-bottom: 80px;
+    padding-bottom: calc(var(--mobile-bottom-bar-height) + env(safe-area-inset-bottom) + 20px);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
 }
 
 body.is-mobile #mobile-search-container {
     display: block;
 }
 
-/* Ensure desktop search modal is hidden on mobile */
-body.is-mobile #search-modal {
-    display: none;
+body.is-mobile #terminal {
+    padding-bottom: 10px;
 }
 
-/* Responsive design */
+/* Hide desktop features on mobile */
+body.is-mobile #search-modal {
+    display: none !important;
+}
+
+body.is-mobile .input-line {
+    flex-wrap: wrap;
+}
+
+body.is-mobile .input-line .prompt {
+    margin-bottom: 5px;
+}
+
+body.is-mobile .terminal-input {
+    width: 100%;
+    font-size: 16px; /* Prevents zoom on iOS */
+}
+
+/* Responsive design for various mobile aspect ratios */
+/* Standard mobile devices (9:16) */
 @media (max-width: 768px) {
     body {
         padding: 1rem;
+        font-size: 14px;
     }
     
     .search-box {
         width: 90%;
         max-width: 400px;
+        padding: 1.5rem;
+    }
+    
+    .line {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .highlight {
+        font-size: 14px;
+    }
+}
+
+/* Narrow phones (20:9 aspect ratio like modern smartphones) */
+@media (max-width: 480px) {
+    body {
+        padding: 0.75rem;
+        font-size: 13px;
+    }
+    
+    #terminal {
+        padding-bottom: 10px;
+    }
+    
+    .line {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+    
+    .input-line .prompt {
+        font-size: 13px;
+    }
+    
+    .terminal-input {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+    }
+}
+
+/* Very narrow phones */
+@media (max-width: 360px) {
+    body {
+        padding: 0.5rem;
+        font-size: 12px;
+    }
+    
+    .line {
+        font-size: 12px;
+    }
+    
+    #mobile-search-input {
+        padding: 12px 14px;
+        font-size: 16px; /* Keep to prevent zoom */
+    }
+}
+
+/* Landscape mode on mobile */
+@media (max-width: 896px) and (orientation: landscape) {
+    body {
+        padding: 0.5rem;
+        padding-bottom: calc(var(--mobile-bottom-bar-height) + env(safe-area-inset-bottom) + 10px);
+    }
+    
+    #mobile-search-container {
+        padding: 8px 12px;
+        padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    }
+    
+    #mobile-search-input {
+        padding: 10px 14px;
+    }
+    
+    .line {
+        font-size: 13px;
+    }
+}
+
+/* Tablet devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+    body {
+        padding: 1.5rem;
+    }
+    
+    .search-box {
+        width: 70%;
+        max-width: 600px;
+    }
+}
+
+/* Touch device optimization */
+@media (hover: none) and (pointer: coarse) {
+    a, button, input {
+        min-height: 44px; /* iOS recommended tap target */
+        min-width: 44px;
+    }
+    
+    .terminal-input {
+        min-height: 44px;
+    }
+    
+    #mobile-search-input {
+        min-height: 48px;
     }
 }
 
