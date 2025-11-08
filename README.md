@@ -64,17 +64,23 @@ This repository includes a static version of the application that can be deploye
 **Desktop View:**
 ![Welcome Screen](https://github.com/user-attachments/assets/889620b7-fa6e-409a-8c84-5ff6f3d3366a)
 
-**Mobile View (16:9 Portrait):**
-![Mobile 16:9](https://github.com/user-attachments/assets/mobile-16-9-portrait)
+**Interactive Terminal with Help Command:**
+![Help Command](https://github.com/user-attachments/assets/229cb40b-95ed-4083-9f6d-31b4d0f77c14)
 
-**Mobile View (20:9 Portrait - Modern Smartphones):**
-![Mobile 20:9](https://github.com/user-attachments/assets/mobile-20-9-portrait)
+**List Papers Command:**
+![List Papers](https://github.com/user-attachments/assets/73ca09d0-7e6a-4c02-bfb5-48a9cec59753)
 
-**Mobile Search in Action:**
-![Mobile Search](https://github.com/user-attachments/assets/mobile-search-results)
+**Search Functionality:**
+![Search Papers](https://github.com/user-attachments/assets/eae45131-3653-42cc-baa9-c47f5a33b2a0)
 
-**Mobile Landscape Mode:**
-![Mobile Landscape](https://github.com/user-attachments/assets/mobile-landscape)
+**Mobile Optimizations:**
+The site is fully optimized for mobile devices with:
+- Fixed bottom search bar for easy thumb access
+- Support for 16:9 and 20:9 aspect ratios (iPhone 8, SE, iPhone 12+, Galaxy S)
+- Landscape mode support with compact layout
+- Touch-friendly tap targets (44px minimum)
+- iOS optimization (16px font prevents zoom)
+- Safe area support for notched devices
 
 ### ✨ Interactive Features
 
