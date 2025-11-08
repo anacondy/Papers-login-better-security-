@@ -61,6 +61,104 @@ Based on comprehensive security assessment:
 
 See [SECURITY_ASSESSMENT.md](SECURITY_ASSESSMENT.md) for detailed analysis.
 
+## 🌐 GitHub Pages Deployment
+
+This repository includes a static version of the application that can be deployed on GitHub Pages.
+
+### 📦 What's Included
+
+- `index.html` - Static version of the main page in the root directory
+- `static/` - CSS and JavaScript files
+- `.nojekyll` - Ensures GitHub Pages serves all files correctly
+
+### 🚀 How to Deploy on GitHub Pages
+
+1. **Go to your repository settings:**
+   - Navigate to `Settings` → `Pages` in your GitHub repository
+
+2. **Configure GitHub Pages:**
+   - **Source**: Select `Deploy from a branch`
+   - **Branch**: Choose `main` (or `copilot/make-site-live-on-pages`)
+   - **Folder**: Select `/ (root)`
+   - Click `Save`
+
+3. **Wait for deployment:**
+   - GitHub will automatically build and deploy your site
+   - This usually takes 1-2 minutes
+   - You'll see a green checkmark when it's ready
+
+4. **Access your site:**
+   - Your site will be available at: `https://<your-username>.github.io/<repository-name>/`
+   - Example: `https://anacondy.github.io/Papers-login-better-security-/`
+
+### 📸 Preview
+
+**Desktop View:**
+![Welcome Screen](https://github.com/user-attachments/assets/889620b7-fa6e-409a-8c84-5ff6f3d3366a)
+
+**Interactive Terminal with Help Command:**
+![Help Command](https://github.com/user-attachments/assets/229cb40b-95ed-4083-9f6d-31b4d0f77c14)
+
+**List Papers Command:**
+![List Papers](https://github.com/user-attachments/assets/73ca09d0-7e6a-4c02-bfb5-48a9cec59753)
+
+**Search Functionality:**
+![Search Papers](https://github.com/user-attachments/assets/eae45131-3653-42cc-baa9-c47f5a33b2a0)
+
+**Mobile Optimizations:**
+The site is fully optimized for mobile devices with:
+- Fixed bottom search bar for easy thumb access
+- Support for 16:9 and 20:9 aspect ratios (iPhone 8, SE, iPhone 12+, Galaxy S)
+- Landscape mode support with compact layout
+- Touch-friendly tap targets (44px minimum)
+- iOS optimization (16px font prevents zoom)
+- Safe area support for notched devices
+
+### ✨ Interactive Features
+
+The static GitHub Pages version now includes a **fully functional terminal interface** with:
+
+- **Interactive Commands:**
+  - `help` - Display available commands
+  - `list` - Show all papers in the database
+  - `search [query]` - Search for specific papers (e.g., `search Physics`)
+  - `subjects` - List all available subjects with counts
+  - `years` - Display available years
+  - `clear` - Clear the terminal screen
+  - `about` - Information about the portal
+  - `github` - Open the GitHub repository
+
+- **Terminal Features:**
+  - Command history (Arrow Up/Down to navigate)
+  - Auto-complete ready structure
+  - Real-time search filtering
+  - Sample database with 10 papers across 5 subjects
+  - Clickable paper links
+  - Mobile-responsive design with bottom search bar
+  - Quick search modal (Ctrl+K on desktop)
+
+- **Mobile Optimizations:**
+  - **Fixed bottom search bar** for easy access on mobile devices
+  - Optimized for **16:9 and 20:9 aspect ratios** (standard and modern smartphones)
+  - Responsive layout that adapts to portrait and landscape orientations
+  - Touch-friendly tap targets (min 44px for iOS compliance)
+  - Prevents zoom on input focus (iOS optimization)
+  - Safe area support for notched devices (iPhone X and newer)
+  - Smooth scrolling and performance optimizations
+  - Automatic mobile detection with device-specific styling
+
+### ⚠️ Important Notes
+
+- The static version now includes a **fully functional terminal interface** with interactive commands
+- **Mobile-optimized** with fixed bottom search bar for 16:9 and 20:9 aspect ratios
+- Sample database included with Physics, Mathematics, Chemistry, Computer Science, and Biology papers
+- All terminal commands work client-side without requiring a backend
+- Search functionality filters papers in real-time on both desktop and mobile
+- Responsive design automatically adapts to device screen size and orientation
+- Backend features for actual file storage require the Flask application
+- For full functionality with real database, deploy the Flask app to Heroku, Railway, or AWS
+- The GitHub Pages version is perfect for showcasing the UI/UX and terminal interaction
+
 ## 🚀 Quick Start
 
 ### Prerequisites
