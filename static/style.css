@@ -211,3 +211,42 @@ body.is-mobile #search-modal {
         max-width: 400px;
     }
 }
+
+/* Terminal Input Styles */
+.input-line {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.input-line .prompt {
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.terminal-input {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    outline: none;
+    caret-color: var(--primary-color);
+}
+
+.terminal-input::selection {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+}
+
+/* Cursor blink animation */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.terminal-input:focus {
+    animation: none;
+}
+

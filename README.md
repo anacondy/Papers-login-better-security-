@@ -61,14 +61,50 @@ This repository includes a static version of the application that can be deploye
 
 ### 📸 Preview
 
-![GitHub Pages Preview](https://github.com/user-attachments/assets/f159bb4f-370d-4ff3-8234-1723e7e2744d)
+**Welcome Screen:**
+![Welcome Screen](https://github.com/user-attachments/assets/889620b7-fa6e-409a-8c84-5ff6f3d3366a)
+
+**Interactive Terminal with Help Command:**
+![Help Command](https://github.com/user-attachments/assets/229cb40b-95ed-4083-9f6d-31b4d0f77c14)
+
+**List Papers Command:**
+![List Papers](https://github.com/user-attachments/assets/73ca09d0-7e6a-4c02-bfb5-48a9cec59753)
+
+**Search Functionality:**
+![Search Papers](https://github.com/user-attachments/assets/eae45131-3653-42cc-baa9-c47f5a33b2a0)
+
+### ✨ Interactive Features
+
+The static GitHub Pages version now includes a **fully functional terminal interface** with:
+
+- **Interactive Commands:**
+  - `help` - Display available commands
+  - `list` - Show all papers in the database
+  - `search [query]` - Search for specific papers (e.g., `search Physics`)
+  - `subjects` - List all available subjects with counts
+  - `years` - Display available years
+  - `clear` - Clear the terminal screen
+  - `about` - Information about the portal
+  - `github` - Open the GitHub repository
+
+- **Terminal Features:**
+  - Command history (Arrow Up/Down to navigate)
+  - Auto-complete ready structure
+  - Real-time search filtering
+  - Sample database with 10 papers across 5 subjects
+  - Clickable paper links
+  - Mobile-responsive design
+  - Quick search modal (Ctrl+K)
 
 ### ⚠️ Important Notes
 
-- The static version displays the terminal-style interface
-- Backend features (search, database) require the Flask application to be running
-- For full functionality, deploy the Flask app to a platform like Heroku, Railway, or AWS
-- The GitHub Pages version is perfect for showcasing the UI/UX
+- The static version now includes a **fully functional terminal interface** with interactive commands
+- Sample database included with Physics, Mathematics, Chemistry, Computer Science, and Biology papers
+- All terminal commands work client-side without requiring a backend
+- Search functionality filters papers in real-time
+- Backend features for actual file storage require the Flask application
+- For full functionality with real database, deploy the Flask app to Heroku, Railway, or AWS
+- The GitHub Pages version is perfect for showcasing the UI/UX and terminal interaction
 
 ## 🚀 Quick Start
 
