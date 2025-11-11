@@ -61,6 +61,8 @@
      * Display welcome message
      */
     function displayWelcome() {
+        const device = detectDevice();
+        
         addLine('');
         addLine('<span class="highlight">╔════════════════════════════════════════════════════════════════╗</span>');
         addLine('<span class="highlight">║                                                                ║</span>');
@@ -68,8 +70,11 @@
         addLine('<span class="highlight">║                                                                ║</span>');
         addLine('<span class="highlight">╚════════════════════════════════════════════════════════════════╝</span>');
         addLine('');
+        addLine(`<span class="comment"># Detected Device: ${device.emoji} ${escapeHtml(device.type)} (${escapeHtml(device.os)})</span>`);
+        addLine('');
         addLine('<span class="comment"># Type "help" to see available commands</span>');
         addLine('<span class="comment"># Press Ctrl+K to open quick search</span>');
+        addLine('<span class="comment"># Type "device" for detailed system information</span>');
         addLine('');
     }
 
@@ -85,9 +90,13 @@
         addLine('  <span class="prompt">search [query]</span> - Search for papers (e.g., search Physics)');
         addLine('  <span class="prompt">subjects</span>       - List all subjects');
         addLine('  <span class="prompt">years</span>          - List available years');
+        addLine('  <span class="prompt">device</span>         - Show device and system information');
         addLine('  <span class="prompt">clear</span>          - Clear the terminal');
         addLine('  <span class="prompt">about</span>          - About this portal');
         addLine('  <span class="prompt">github</span>         - View GitHub repository');
+        addLine('');
+        addLine('<span class="comment"># Quick Search: Press Ctrl+K</span>');
+        addLine('<span class="comment"># Hidden Feature: Press F+S for 2 seconds for stats</span>');
         addLine('');
     }
 
@@ -180,9 +189,36 @@
         addLine('  • Search functionality (Ctrl+K for quick search)');
         addLine('  • Mobile responsive design');
         addLine('  • Enterprise-grade security measures');
+        addLine('  • Comprehensive device detection');
         addLine('');
         addLine('<span class="comment"># Repository:</span>');
         addLine('  <a href="https://github.com/anacondy/Papers-login-better-security-" target="_blank">https://github.com/anacondy/Papers-login-better-security-</a>');
+        addLine('');
+    }
+
+    /**
+     * Display device information
+     * Shows comprehensive device, OS, and browser details
+     */
+    function displayDeviceInfo() {
+        const device = detectDevice();
+        
+        addLine('');
+        addLine('<span class="highlight">Device Information</span>');
+        addLine('');
+        addLine(`<span class="comment"># Device Type:</span> ${device.emoji} ${escapeHtml(device.type)}`);
+        addLine(`<span class="comment"># Operating System:</span> ${escapeHtml(device.os)}`);
+        addLine(`<span class="comment"># Browser:</span> ${escapeHtml(device.browser)}`);
+        addLine('');
+        addLine('<span class="comment"># Form Factor:</span>');
+        addLine(`  • Mobile: ${device.isMobile ? 'Yes' : 'No'}`);
+        addLine(`  • Tablet: ${device.isTablet ? 'Yes' : 'No'}`);
+        addLine(`  • Desktop: ${device.isDesktop ? 'Yes' : 'No'}`);
+        addLine('');
+        addLine('<span class="comment"># Screen Information:</span>');
+        addLine(`  • Screen Resolution: ${window.screen.width}x${window.screen.height}`);
+        addLine(`  • Viewport Size: ${window.innerWidth}x${window.innerHeight}`);
+        addLine(`  • Color Depth: ${window.screen.colorDepth}-bit`);
         addLine('');
     }
 
@@ -252,6 +288,12 @@
                 addLine('  <a href="https://github.com/anacondy/Papers-login-better-security-" target="_blank">https://github.com/anacondy/Papers-login-better-security-</a>');
                 addLine('');
                 window.open('https://github.com/anacondy/Papers-login-better-security-', '_blank');
+                break;
+
+            case 'device':
+            case 'info-device':
+            case 'system':
+                displayDeviceInfo();
                 break;
 
             case '':
@@ -361,11 +403,115 @@
     }
 
     /**
-     * Detect mobile device
+     * Comprehensive device detection with device type identification
+     * Detects: Android 🐶, iPhone 🍎, Apple devices 🍏, Windows 🪟, Others 👽
+     * @returns {Object} Device information including type, OS, browser, and form factor
+     */
+    function detectDevice() {
+        const ua = navigator.userAgent;
+        const platform = navigator.platform;
+        
+        // Device info object to return
+        const deviceInfo = {
+            isMobile: false,
+            isTablet: false,
+            isDesktop: false,
+            type: '',
+            emoji: '',
+            os: '',
+            browser: ''
+        };
+        
+        // Detect Android devices 🐶
+        if (/Android/i.test(ua)) {
+            deviceInfo.isMobile = /Mobile/i.test(ua);
+            deviceInfo.isTablet = !deviceInfo.isMobile && /Android/i.test(ua);
+            deviceInfo.type = 'Android';
+            deviceInfo.emoji = '🐶';
+            deviceInfo.os = 'Android';
+        }
+        // Detect iPhone 🍎
+        else if (/iPhone/i.test(ua)) {
+            deviceInfo.isMobile = true;
+            deviceInfo.type = 'iPhone';
+            deviceInfo.emoji = '🍎';
+            deviceInfo.os = 'iOS';
+        }
+        // Detect iPad (modern iPads report as Mac, so check for touch capability)
+        else if (/iPad/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+            deviceInfo.isTablet = true;
+            deviceInfo.type = 'iPad';
+            deviceInfo.emoji = '🍏';
+            deviceInfo.os = 'iPadOS';
+        }
+        // Detect iPod 🍏
+        else if (/iPod/i.test(ua)) {
+            deviceInfo.isMobile = true;
+            deviceInfo.type = 'iPod';
+            deviceInfo.emoji = '🍏';
+            deviceInfo.os = 'iOS';
+        }
+        // Detect Mac computers 🍏
+        else if (/Macintosh|MacIntel|MacPPC|Mac68K/i.test(ua) || platform.includes('Mac')) {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Mac';
+            deviceInfo.emoji = '🍏';
+            deviceInfo.os = 'macOS';
+        }
+        // Detect Windows devices 🪟
+        else if (/Windows|Win32|Win64|WinCE/i.test(ua) || platform.includes('Win')) {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Windows';
+            deviceInfo.emoji = '🪟';
+            deviceInfo.os = 'Windows';
+        }
+        // Detect Linux
+        else if (/Linux/i.test(ua) || platform.includes('Linux')) {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Linux';
+            deviceInfo.emoji = '🐧';
+            deviceInfo.os = 'Linux';
+        }
+        // Detect other mobile devices
+        else if (/webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
+            deviceInfo.isMobile = true;
+            deviceInfo.type = 'Other Mobile';
+            deviceInfo.emoji = '👽';
+            deviceInfo.os = 'Other';
+        }
+        // Unknown/Other devices 👽
+        else {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Other';
+            deviceInfo.emoji = '👽';
+            deviceInfo.os = 'Unknown';
+        }
+        
+        // Detect browser
+        if (/Chrome/i.test(ua) && !/Edge|Edg/i.test(ua)) {
+            deviceInfo.browser = 'Chrome';
+        } else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) {
+            deviceInfo.browser = 'Safari';
+        } else if (/Firefox/i.test(ua)) {
+            deviceInfo.browser = 'Firefox';
+        } else if (/Edge|Edg/i.test(ua)) {
+            deviceInfo.browser = 'Edge';
+        } else if (/MSIE|Trident/i.test(ua)) {
+            deviceInfo.browser = 'Internet Explorer';
+        } else {
+            deviceInfo.browser = 'Other';
+        }
+        
+        return deviceInfo;
+    }
+
+    /**
+     * Detect mobile device (legacy function for backward compatibility)
+     * Now uses enhanced device detection and also checks screen width
      */
     function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-               (window.innerWidth <= 768);
+        const device = detectDevice();
+        return device.isMobile || device.isTablet || (window.innerWidth <= 768);
     }
 
     /**
