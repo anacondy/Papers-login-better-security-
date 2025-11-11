@@ -250,26 +250,135 @@
     }
 
     // ============================================================================
-    // MOBILE DETECTION
+    // DEVICE DETECTION
     // ============================================================================
 
     /**
-     * Detect if device is mobile
-     * @returns {boolean} Is mobile
+     * Comprehensive device detection with device type identification
+     * Detects: Android 🐶, iPhone 🍎, Apple devices 🍏, Windows 🪟, Others 👽
+     * @returns {Object} Device information including type, OS, browser, and form factor
+     */
+    function detectDevice() {
+        const ua = navigator.userAgent;
+        const platform = navigator.platform;
+        
+        // Device info object to return
+        const deviceInfo = {
+            isMobile: false,
+            isTablet: false,
+            isDesktop: false,
+            type: '',
+            emoji: '',
+            os: '',
+            browser: ''
+        };
+        
+        // Detect Android devices 🐶
+        if (/Android/i.test(ua)) {
+            deviceInfo.isMobile = /Mobile/i.test(ua);
+            deviceInfo.isTablet = !deviceInfo.isMobile && /Android/i.test(ua);
+            deviceInfo.type = 'Android';
+            deviceInfo.emoji = '🐶';
+            deviceInfo.os = 'Android';
+        }
+        // Detect iPhone 🍎
+        else if (/iPhone/i.test(ua)) {
+            deviceInfo.isMobile = true;
+            deviceInfo.type = 'iPhone';
+            deviceInfo.emoji = '🍎';
+            deviceInfo.os = 'iOS';
+        }
+        // Detect iPad (modern iPads report as Mac, so check for touch capability)
+        else if (/iPad/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+            deviceInfo.isTablet = true;
+            deviceInfo.type = 'iPad';
+            deviceInfo.emoji = '🍏';
+            deviceInfo.os = 'iPadOS';
+        }
+        // Detect iPod 🍏
+        else if (/iPod/i.test(ua)) {
+            deviceInfo.isMobile = true;
+            deviceInfo.type = 'iPod';
+            deviceInfo.emoji = '🍏';
+            deviceInfo.os = 'iOS';
+        }
+        // Detect Mac computers 🍏
+        else if (/Macintosh|MacIntel|MacPPC|Mac68K/i.test(ua) || platform.includes('Mac')) {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Mac';
+            deviceInfo.emoji = '🍏';
+            deviceInfo.os = 'macOS';
+        }
+        // Detect Windows devices 🪟
+        else if (/Windows|Win32|Win64|WinCE/i.test(ua) || platform.includes('Win')) {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Windows';
+            deviceInfo.emoji = '🪟';
+            deviceInfo.os = 'Windows';
+        }
+        // Detect Linux
+        else if (/Linux/i.test(ua) || platform.includes('Linux')) {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Linux';
+            deviceInfo.emoji = '🐧';
+            deviceInfo.os = 'Linux';
+        }
+        // Detect other mobile devices
+        else if (/webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
+            deviceInfo.isMobile = true;
+            deviceInfo.type = 'Other Mobile';
+            deviceInfo.emoji = '👽';
+            deviceInfo.os = 'Other';
+        }
+        // Unknown/Other devices 👽
+        else {
+            deviceInfo.isDesktop = true;
+            deviceInfo.type = 'Other';
+            deviceInfo.emoji = '👽';
+            deviceInfo.os = 'Unknown';
+        }
+        
+        // Detect browser
+        if (/Chrome/i.test(ua) && !/Edge|Edg/i.test(ua)) {
+            deviceInfo.browser = 'Chrome';
+        } else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) {
+            deviceInfo.browser = 'Safari';
+        } else if (/Firefox/i.test(ua)) {
+            deviceInfo.browser = 'Firefox';
+        } else if (/Edge|Edg/i.test(ua)) {
+            deviceInfo.browser = 'Edge';
+        } else if (/MSIE|Trident/i.test(ua)) {
+            deviceInfo.browser = 'Internet Explorer';
+        } else {
+            deviceInfo.browser = 'Other';
+        }
+        
+        return deviceInfo;
+    }
+
+    /**
+     * Legacy function for backward compatibility
+     * Detect if device is mobile or tablet
+     * @returns {boolean} Is mobile or tablet
      */
     function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const device = detectDevice();
+        return device.isMobile || device.isTablet;
     }
 
     /**
      * Initialize mobile-specific features
+     * Adds appropriate CSS class and sets up mobile search functionality
      */
     function initMobile() {
+        // Detect device type and apply appropriate styling
         if (isMobileDevice()) {
             document.body.classList.add('is-mobile');
             
+            // Get the mobile search input element (fixed at bottom for mobile devices)
             const mobileSearchInput = document.getElementById('mobile-search-input');
             if (mobileSearchInput) {
+                // Create debounced search function to avoid excessive API calls
                 const debouncedSearch = debounce((e) => {
                     const query = e.target.value.trim();
                     if (query) {
@@ -277,6 +386,7 @@
                     }
                 }, CONFIG.searchDelay);
                 
+                // Attach debounced search to input event
                 mobileSearchInput.addEventListener('input', debouncedSearch);
             }
         }
