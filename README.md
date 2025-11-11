@@ -124,6 +124,7 @@ The static GitHub Pages version now includes a **fully functional terminal inter
   - `search [query]` - Search for specific papers (e.g., `search Physics`)
   - `subjects` - List all available subjects with counts
   - `years` - Display available years
+  - `device` - Show detailed device and system information
   - `clear` - Clear the terminal screen
   - `about` - Information about the portal
   - `github` - Open the GitHub repository
@@ -136,6 +137,8 @@ The static GitHub Pages version now includes a **fully functional terminal inter
   - Clickable paper links
   - Mobile-responsive design with bottom search bar
   - Quick search modal (Ctrl+K on desktop)
+  - **NEW**: Comprehensive device detection with emojis
+  - **NEW**: Hidden stats page (Press F+S together for 2 seconds)
 
 - **Mobile Optimizations:**
   - **Fixed bottom search bar** for easy access on mobile devices
@@ -146,6 +149,38 @@ The static GitHub Pages version now includes a **fully functional terminal inter
   - Safe area support for notched devices (iPhone X and newer)
   - Smooth scrolling and performance optimizations
   - Automatic mobile detection with device-specific styling
+
+### 🔍 Device Detection & System Information
+
+The portal now includes **comprehensive device detection** that identifies:
+
+- **Android Devices** 🐶 - Detects Android phones and tablets
+- **iPhone** 🍎 - Specifically identifies iPhones
+- **Apple Devices** 🍏 - Detects iPad, iPod, and Mac computers
+- **Windows** 🪟 - Identifies Windows PCs
+- **Linux** 🐧 - Detects Linux systems
+- **Other Devices** 👽 - Catches any other device types
+
+**Features:**
+- Automatic device detection on page load
+- Device emoji displayed in terminal welcome message
+- `device` command shows detailed system information
+- Distinguishes between mobile, tablet, and desktop
+- Detects operating system (iOS, Android, Windows, macOS, Linux, etc.)
+- Identifies browser (Chrome, Safari, Firefox, Edge, etc.)
+- Shows screen resolution and viewport dimensions
+
+**Hidden Stats Page:**
+Press and hold **F+S** keys together for **2 seconds** to access the hidden statistics page that shows:
+- Complete device information with emoji
+- Operating system details
+- Browser information
+- Total number of searches performed
+- Session duration
+- Screen and viewport dimensions
+- User agent string
+
+This feature is perfect for developers and users who want to understand how the site detects and adapts to their device!
 
 ### ⚠️ Important Notes
 
@@ -298,6 +333,89 @@ pytest
 flake8 app.py
 black app.py --check
 ```
+
+## 📤 Admin & Upload Functionality
+
+The application includes admin functionality for managing paper uploads. This feature is currently available in the Flask backend.
+
+### Admin Login
+
+**Access:** `/login` route (when Flask app is running)
+
+The login page (`login.html`) provides a secure admin authentication interface with:
+- Username and password fields
+- Flask session-based authentication
+- CSRF protection
+- Rate limiting to prevent brute force attacks
+- Error message display for failed login attempts
+
+**Creating Admin Account:**
+
+Use the provided scripts to create an admin account:
+
+```bash
+# Simple method (for development)
+python create_admin.py
+
+# Secure method (recommended for production)
+python create_admin_secure.py
+```
+
+The secure method (`create_admin_secure.py`) includes:
+- Password hashing with bcrypt
+- Salt generation for enhanced security
+- Secure storage in database
+- Input validation
+
+### Multi-File Upload Interface
+
+**Access:** `/upload` route (requires admin login)
+
+The upload page (`upload.html`) provides a sophisticated multi-file upload interface with:
+
+**Features:**
+- **Drag & Drop:** Drag multiple PDF files into the upload zone
+- **File Selection:** Traditional file browser interface
+- **Multi-File Processing:** Upload multiple papers simultaneously
+- **Metadata Entry:** For each file, enter:
+  - University name (with autocomplete)
+  - Paper number (First Paper, Second Paper, etc.)
+  - Year (2020-2025)
+  - Time duration (1 hr - 3.5 hr)
+  - Maximum marks (20, 54, 80, 100)
+- **Batch Upload:** Upload all files with one click
+- **Status Tracking:** Visual indicators for upload status
+- **Validation:** Client-side and server-side validation
+
+**Upload Process:**
+1. Admin logs in via `/login`
+2. Navigates to `/upload`
+3. Drag & drop or select PDF files
+4. Fill in metadata for each file
+5. Click "Upload All Pending Files"
+6. Files are validated and stored securely
+7. Metadata is saved to database
+
+**JavaScript:** The upload functionality is powered by `upload.js` which handles:
+- File drag & drop events
+- Dynamic form generation
+- AJAX upload requests
+- Progress tracking
+- Error handling
+
+### Security Considerations
+
+The admin and upload functionality includes:
+- ✅ Authentication required for all admin routes
+- ✅ CSRF tokens on all forms
+- ✅ File type validation (PDF only)
+- ✅ File size limits (16MB max)
+- ✅ Input sanitization for metadata
+- ✅ Rate limiting on upload endpoint
+- ✅ Secure file storage with unique names
+- ✅ Session timeout after inactivity
+
+**Note:** The upload functionality requires the Flask backend to be running. It is not available in the static GitHub Pages version.
 
 ## 🔍 Security Features Explained
 
