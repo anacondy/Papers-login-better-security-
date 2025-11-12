@@ -1,9 +1,13 @@
 // Service Worker for PWA support and offline caching
-const CACHE_NAME = 'papers-portal-v1.0.0'; // Version should be updated with each deployment
+const CACHE_NAME = 'papers-portal-v1.1.0'; // Version updated for error page GIF
 const urlsToCache = [
   '/',
+  '/offline',
+  '/offline.html',
+  '/404.html',
   '/static/style.css',
-  '/static/script.js'
+  '/static/script.js',
+  '/static/error-page.gif'
 ];
 
 const externalUrls = [
@@ -37,7 +41,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// Fetch from cache, fallback to network
+// Fetch from cache, fallback to network, fallback to offline page
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
@@ -46,7 +50,23 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response;
         }
-        return fetch(event.request);
+        
+        // Try network fetch
+        return fetch(event.request)
+          .catch(error => {
+            // Network failed, return offline page for navigation requests
+            if (event.request.mode === 'navigate') {
+              // Try Flask route first, then fall back to static HTML
+              return caches.match('/offline')
+                .then(offlineResponse => {
+                  if (offlineResponse) {
+                    return offlineResponse;
+                  }
+                  return caches.match('/offline.html');
+                });
+            }
+            throw error;
+          });
       })
   );
 });

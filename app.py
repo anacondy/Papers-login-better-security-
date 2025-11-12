@@ -229,6 +229,16 @@ def index():
         logger.error(f"Error rendering index: {e}")
         return "An error occurred", 500
 
+@app.route('/offline')
+@limiter.exempt  # Offline page should not be rate limited
+def offline():
+    """Render the offline page for PWA offline support"""
+    try:
+        return render_template('offline.html')
+    except Exception as e:
+        logger.error(f"Error rendering offline page: {e}")
+        return "An error occurred", 500
+
 @app.route('/search', methods=['POST'])
 @limiter.limit("10 per minute")  # Strict rate limit for search
 def search():

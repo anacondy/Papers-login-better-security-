@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1a1a1a">
     <meta name="description" content="Previous Year Papers - Secure Academic Resource Portal">
-    <title>500 - Server Error | Previous Year Papers</title>
+    <title>Offline | Previous Year Papers</title>
     
     <!-- Preconnect to external domains for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,30 +88,30 @@
 </head>
 <body class="theme-green">
     <div class="error-page-container">
-        <img src="{{ url_for('static', filename='error-page.gif') }}" alt="Error illustration" class="error-background">
+        <img src="{{ url_for('static', filename='error-page.gif') }}" alt="Offline illustration" class="error-background">
         <div class="error-overlay"></div>
         
         <div id="terminal">
             <div id="output">
                 <div class="line">
-                    <span class="prompt">error@papers:~$</span>
-                    <span class="command"> 500 - Internal Server Error</span>
+                    <span class="prompt">offline@papers:~$</span>
+                    <span class="command"> You are currently offline</span>
                 </div>
                 <div class="line">
-                    <span class="comment"># Something went wrong on our end.</span>
+                    <span class="comment"># No internet connection detected.</span>
                 </div>
                 <div class="line">
-                    <span class="comment"># Our team has been notified and is working on it.</span>
+                    <span class="comment"># Please check your network connection and try again.</span>
                 </div>
                 <div class="line">&nbsp;</div>
                 <div class="line">
                     <span class="highlight">Available commands:</span>
                 </div>
                 <div class="line">
-                    <span class="command">  → <a href="/">Go to home page</a></span>
+                    <span class="command">  → <a href="javascript:location.reload()">Retry connection</a></span>
                 </div>
                 <div class="line">
-                    <span class="command">  → <a href="javascript:history.back()">Go back</a></span>
+                    <span class="command">  → <a href="/">Go to home page</a></span>
                 </div>
             </div>
         </div>

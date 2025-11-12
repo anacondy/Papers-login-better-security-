@@ -22,27 +22,94 @@
     <!-- iOS Safari optimizations -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <style>
+        .error-page-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .error-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90vw;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            opacity: 0.6;
+            /* Removed blur to allow GIF animation to play smoothly */
+        }
+        
+        .error-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+        
+        #terminal {
+            position: relative;
+            z-index: 3;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .error-background {
+                max-width: 95vw;
+                max-height: 70vh;
+            }
+            
+            #terminal {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
 
 </head>
 <body class="theme-green">
-    <div id="terminal">
-        <div id="output">
-            <div class="line">
-                <span class="prompt">error@papers:~$</span>
-                <span class="command"> 404 - Page Not Found</span>
-            </div>
-            <div class="line">
-                <span class="comment"># The page you are looking for does not exist.</span>
-            </div>
-            <div class="line">&nbsp;</div>
-            <div class="line">
-                <span class="highlight">Available commands:</span>
-            </div>
-            <div class="line">
-                <span class="command">  → <a href="/">Go to home page</a></span>
-            </div>
-            <div class="line">
-                <span class="command">  → <a href="javascript:history.back()">Go back</a></span>
+    <div class="error-page-container">
+        <img src="{{ url_for('static', filename='error-page.gif') }}" alt="Error illustration" class="error-background">
+        <div class="error-overlay"></div>
+        
+        <div id="terminal">
+            <div id="output">
+                <div class="line">
+                    <span class="prompt">error@papers:~$</span>
+                    <span class="command"> 404 - Page Not Found</span>
+                </div>
+                <div class="line">
+                    <span class="comment"># The page you are looking for does not exist.</span>
+                </div>
+                <div class="line">&nbsp;</div>
+                <div class="line">
+                    <span class="highlight">Available commands:</span>
+                </div>
+                <div class="line">
+                    <span class="command">  → <a href="/">Go to home page</a></span>
+                </div>
+                <div class="line">
+                    <span class="command">  → <a href="javascript:history.back()">Go back</a></span>
+                </div>
             </div>
         </div>
     </div>
