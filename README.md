@@ -5,30 +5,125 @@
 
 A secure, mobile-optimized web application for accessing and searching previous year academic papers with a terminal-style interface.
 
+## 📁 Project Structure
+
+```
+Papers-login-better-security-/
+│
+├── 📄 Core Application Files
+│   ├── app.py                      # Main Flask application with security features
+│   ├── database.py                 # Database configuration and models
+│   ├── mock_data.py                # Sample data for testing
+│   ├── requirements.txt            # Python dependencies
+│   └── .env.example                # Environment variables template
+│
+├── 🌐 Static Site Files (GitHub Pages)
+│   ├── index.html                  # Standalone homepage with terminal interface
+│   ├── login.html                  # Admin login page
+│   ├── upload.html                 # Multi-file upload interface
+│   ├── style.css                   # Main stylesheet
+│   ├── script.js                   # Client-side JavaScript
+│   └── upload.js                   # Upload functionality
+│
+├── 📂 Flask Templates (Backend)
+│   └── templates/
+│       ├── index.html              # Flask template for homepage
+│       ├── 404.html                # Custom 404 error page
+│       └── 500.html                # Custom 500 error page
+│
+├── 📂 Static Assets (Backend)
+│   └── static/
+│       ├── style.css               # Stylesheets
+│       ├── script.js               # Main JavaScript
+│       ├── terminal.js             # Terminal interface logic
+│       ├── upload.js               # Upload functionality
+│       ├── manifest.json           # PWA manifest
+│       └── sw.js                   # Service worker
+│
+├── 📸 Documentation & Media
+│   ├── screenshots/                # Application screenshots
+│   │   ├── homepage-desktop.png   # Desktop home view
+│   │   ├── help-command.png       # Help command output
+│   │   ├── list-command.png       # List papers output
+│   │   ├── search-modal.png       # Search modal interface
+│   │   ├── login-page.png         # Admin login
+│   │   ├── upload-page.png        # Upload interface
+│   │   └── mobile-view.png        # Mobile responsive view
+│   │
+│   ├── README.md                   # This file
+│   ├── DEPLOYMENT_GUIDE.md         # Production deployment guide
+│   ├── SECURITY_ASSESSMENT.md      # Security analysis
+│   ├── ARCHITECTURE.md             # System architecture
+│   └── *.md                        # Other documentation files
+│
+├── 🔧 Admin & Setup Scripts
+│   ├── create_admin.py             # Simple admin creation
+│   ├── create_admin_secure.py      # Secure admin creation with bcrypt
+│   ├── verify_security.py          # Security verification script
+│   └── setup.sh                    # Automated setup script
+│
+└── 🔒 Configuration
+    ├── .gitignore                  # Git ignore rules
+    ├── .nojekyll                   # GitHub Pages configuration
+    └── LICENSE                     # MIT License
+```
+
+### 📦 Key Files Explained
+
+#### **For GitHub Pages Deployment** (Static Site)
+- `index.html`, `login.html`, `upload.html` - Standalone HTML pages
+- `static/` folder - All CSS, JavaScript, and assets
+- `.nojekyll` - Ensures proper serving on GitHub Pages
+
+#### **For PythonAnywhere/Server Deployment** (Flask Backend)
+- `app.py` - Main Flask application with security
+- `requirements.txt` - Python dependencies to install
+- `templates/` - Flask HTML templates
+- `static/` - Static assets served by Flask
+- `database.py` - Database models and configuration
+- `.env` - Environment variables (create from `.env.example`)
+
+#### **Admin & Utilities**
+- `create_admin_secure.py` - Create admin accounts with password hashing
+- `verify_security.py` - Run security checks
+- `setup.sh` - Automated setup for Linux/Mac
+
 ## 📸 Screenshots
 
-> **Note**: Screenshots will be added once the site is fully deployed to GitHub Pages. The site is fully functional - see the [Live Demo](https://anacondy.github.io/Papers-login-better-security-/) or test locally by opening `index.html` in your browser.
+### 🏠 Homepage - Desktop View
+![Homepage Desktop](screenshots/homepage-desktop.png)
+*Terminal-style interface with green theme and command prompt*
 
-### Desktop View
-<!-- ![Desktop Interface](screenshots/desktop-view.png) -->
-*Terminal-style interface with search functionality on desktop*
-- Clean terminal-style UI with green theme
-- Press Ctrl+K to open search modal
-- Lists all available papers with class, subject, semester, and year
+### 📋 Help Command
+![Help Command](screenshots/help-command.png)
+*Complete list of available terminal commands*
 
-### Mobile View (16:9 & 20:9 Optimized)
-<!-- ![Mobile Interface](screenshots/mobile-view.png) -->
-*Optimized mobile interface for common phone aspect ratios*
-- Fixed search bar at bottom for easy access
-- Responsive design for modern smartphones
-- Touch-optimized interface
+### 📝 List Papers Command
+![List Papers](screenshots/list-command.png)
+*Display all available papers with subjects and years*
 
-### Search Interface
-<!-- ![Search Modal](screenshots/search-modal.png) -->
-*Quick search with Ctrl+K shortcut*
-- Real-time search functionality
-- Filters papers by class, subject, or year
-- Clean, minimal modal design
+### 🔍 Search Modal (Ctrl+K)
+![Search Modal](screenshots/search-modal.png)
+*Quick search interface with keyboard shortcut*
+
+### 🔐 Admin Login Page
+![Admin Login](screenshots/login-page.png)
+*Secure admin authentication interface*
+
+### 📤 Admin Upload Interface
+![Upload Page](screenshots/upload-page.png)
+*Multi-file upload with drag & drop support*
+
+### 📱 Mobile View (390x844 - iPhone 12)
+![Mobile View](screenshots/mobile-view.png)
+*Responsive design optimized for modern smartphones*
+
+**Mobile Features:**
+- Fixed search bar at bottom for easy thumb access
+- Optimized for 16:9 and 20:9 aspect ratios
+- Touch-friendly tap targets (44px minimum)
+- iOS optimization (16px font prevents zoom)
+- Safe area support for notched devices
 
 ## 🎥 Video Demo
 
@@ -284,25 +379,351 @@ python -c 'import secrets; print(secrets.token_hex(32))'
 - [ ] Configure CORS if needed
 - [ ] Implement authentication system
 
-## 📁 Project Structure
+## 🐍 PythonAnywhere Deployment Guide
 
+PythonAnywhere is a great platform for hosting Python web applications with a free tier option. This guide will walk you through deploying this Flask application on PythonAnywhere.
+
+### 📋 Prerequisites
+
+- A PythonAnywhere account (free tier works fine for testing)
+- Your application files ready to upload
+- Basic familiarity with Bash terminal
+
+### 🚀 Step-by-Step Deployment
+
+#### 1. Create PythonAnywhere Account
+
+1. Go to [www.pythonanywhere.com](https://www.pythonanywhere.com)
+2. Sign up for a free Beginner account
+3. Verify your email address
+4. Log into your dashboard
+
+#### 2. Upload Your Files
+
+**Option A: Using Git (Recommended)**
+
+1. Open a Bash console from your dashboard
+2. Clone your repository:
+```bash
+git clone https://github.com/anacondy/Papers-login-better-security-.git
+cd Papers-login-better-security-
 ```
-Papers-login-better-security-/
-├── app.py                    # Main Flask application with security
-├── requirements.txt          # Python dependencies
-├── .gitignore               # Git ignore file
-├── .env.example             # Example environment variables
-├── SECURITY_ASSESSMENT.md   # Detailed security analysis
-├── README.md                # This file
-├── LICENSE                  # MIT License
-├── templates/               # HTML templates (to be created)
-│   ├── index.html          # Main page
-│   ├── 404.html            # Not found page
-│   └── 500.html            # Server error page
-└── static/                  # Static files (to be created)
-    ├── style.css           # Stylesheets
-    └── script.js           # JavaScript files
+
+**Option B: Manual Upload**
+
+1. Go to the **Files** tab in your dashboard
+2. Navigate to `/home/yourusername/`
+3. Create a new directory: `Papers-login-better-security-`
+4. Upload these essential files:
+   - `app.py`
+   - `requirements.txt`
+   - `database.py`
+   - `mock_data.py`
+   - `.env.example`
+   - All files in `templates/` folder
+   - All files in `static/` folder
+   - `create_admin_secure.py`
+
+#### 3. Set Up Virtual Environment
+
+1. Open a **Bash console** from your dashboard
+2. Create and activate a virtual environment:
+```bash
+cd ~/Papers-login-better-security-
+python3.10 -m venv venv
+source venv/bin/activate
 ```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+**Note:** If you get package conflicts with `safety` and `black`, install only the essential packages:
+```bash
+pip install Flask==3.0.0 Werkzeug==3.0.1 Flask-WTF==1.2.1 Flask-Limiter==3.5.0 Flask-Talisman==1.1.0 python-dotenv==1.0.0 gunicorn==21.2.0
+```
+
+#### 4. Configure Environment Variables
+
+1. Create your `.env` file:
+```bash
+cp .env.example .env
+nano .env
+```
+
+2. Set these variables:
+```bash
+SECRET_KEY=your-generated-secret-key-here
+FLASK_ENV=production
+FLASK_DEBUG=False
+```
+
+3. Generate a secure secret key:
+```bash
+python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+
+4. Copy the output and paste it as your `SECRET_KEY` value
+
+#### 5. Create Admin User (Optional)
+
+If you want admin functionality:
+```bash
+source venv/bin/activate
+python create_admin_secure.py
+```
+
+#### 6. Configure Web App
+
+1. Go to the **Web** tab in your PythonAnywhere dashboard
+2. Click **Add a new web app**
+3. Choose **Manual configuration**
+4. Select **Python 3.10** (or latest available)
+5. Click **Next**
+
+#### 7. Configure WSGI File
+
+1. In the **Web** tab, click on the WSGI configuration file link
+2. Delete all existing content
+3. Add this configuration:
+
+```python
+import sys
+import os
+
+# Add your project directory to the sys.path
+project_home = '/home/yourusername/Papers-login-better-security-'
+if project_home not in sys.path:
+    sys.path.insert(0, project_home)
+
+# Set environment variables
+os.environ['FLASK_ENV'] = 'production'
+os.environ['FLASK_DEBUG'] = 'False'
+
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv(os.path.join(project_home, '.env'))
+
+# Import Flask app
+from app import app as application
+```
+
+**Important:** Replace `yourusername` with your actual PythonAnywhere username!
+
+#### 8. Configure Virtual Environment Path
+
+1. In the **Web** tab, scroll to **Virtualenv** section
+2. Enter the path to your virtual environment:
+```
+/home/yourusername/Papers-login-better-security-/venv
+```
+3. Click the checkmark to save
+
+#### 9. Configure Static Files
+
+In the **Web** tab, scroll to **Static files** section and add:
+
+| URL | Directory |
+|-----|-----------|
+| `/static/` | `/home/yourusername/Papers-login-better-security-/static/` |
+
+#### 10. Reload Your Web App
+
+1. Scroll to the top of the **Web** tab
+2. Click the big green **Reload** button
+3. Wait for the reload to complete (takes 10-30 seconds)
+
+#### 11. Access Your Application
+
+Your app will be available at:
+```
+https://yourusername.pythonanywhere.com
+```
+
+### 📂 Files Required for PythonAnywhere
+
+**Essential Files (Must Upload):**
+- ✅ `app.py` - Main Flask application
+- ✅ `requirements.txt` - Python dependencies
+- ✅ `database.py` - Database configuration
+- ✅ `mock_data.py` - Sample data (or your actual database file)
+- ✅ `.env` - Environment variables (create from .env.example)
+- ✅ `templates/` folder - All HTML templates
+  - `templates/index.html`
+  - `templates/404.html`
+  - `templates/500.html`
+- ✅ `static/` folder - All CSS, JS, and assets
+  - `static/style.css`
+  - `static/script.js`
+  - `static/terminal.js`
+  - `static/manifest.json`
+  - `static/sw.js`
+
+**Optional Files:**
+- `create_admin_secure.py` - For creating admin accounts
+- `verify_security.py` - For security checks
+- Documentation files (*.md) - For reference
+
+**Files NOT Needed on PythonAnywhere:**
+- `index.html`, `login.html`, `upload.html` (root directory) - These are for GitHub Pages only
+- `screenshots/` - Not needed for production
+- `.git/` - PythonAnywhere doesn't need Git history
+- `__pycache__/` - Python cache (auto-generated)
+- `*.pyc` files - Compiled Python files
+
+### 🔄 How File Uploading Works on PythonAnywhere
+
+#### Admin Upload Functionality
+
+When you use the admin upload page (`/upload` route):
+
+1. **User uploads file** → File is sent via HTTP POST request
+2. **Flask receives file** → Stored in `request.files`
+3. **Server saves file** → Saved to a designated directory (e.g., `/home/yourusername/Papers-login-better-security-/uploads/`)
+4. **Metadata saved** → File info stored in database (or JSON file)
+5. **File served** → Files accessible via Flask routes or static file mapping
+
+#### Setting Up File Upload Directory
+
+```bash
+# In your Bash console
+cd ~/Papers-login-better-security-
+mkdir uploads
+chmod 755 uploads
+```
+
+#### Update app.py for File Uploads
+
+Make sure your `app.py` has:
+```python
+import os
+
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# Ensure upload folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+```
+
+### 🗄️ Database on PythonAnywhere
+
+#### Option 1: SQLite (Simple, for small projects)
+
+```python
+# In database.py or app.py
+import os
+
+DATABASE_PATH = os.path.join(os.path.dirname(__file__), 'papers.db')
+```
+
+SQLite file will be stored alongside your application files.
+
+#### Option 2: MySQL (Free with PythonAnywhere)
+
+1. Go to **Databases** tab in PythonAnywhere
+2. Set a MySQL password
+3. Create a new database
+4. Update your database configuration:
+
+```python
+# In .env file
+DATABASE_URL=mysql://yourusername:password@yourusername.mysql.pythonanywhere-services.com/yourusername$databasename
+```
+
+### 🔧 Troubleshooting
+
+#### Application Not Loading?
+
+1. **Check Error Log:**
+   - Go to **Web** tab
+   - Click on **Error log** link
+   - Look for Python errors
+
+2. **Check Server Log:**
+   - Go to **Web** tab
+   - Click on **Server log** link
+   - Look for HTTP errors
+
+3. **Common Issues:**
+   - **Import Error:** Make sure virtual environment is activated and all dependencies installed
+   - **File Not Found:** Check all file paths are absolute, not relative
+   - **Permission Denied:** Ensure file permissions are correct (`chmod 755` for directories, `chmod 644` for files)
+
+#### Static Files Not Loading?
+
+1. Check static files mapping in **Web** tab
+2. Verify file paths are correct
+3. Clear browser cache (Ctrl+Shift+R)
+4. Reload web app
+
+#### Database Issues?
+
+1. Check database file exists and has correct permissions
+2. For SQLite: `chmod 644 papers.db`
+3. For MySQL: Verify connection string is correct
+
+### 🔄 Updating Your Application
+
+When you make changes:
+
+```bash
+# Option 1: Using Git
+cd ~/Papers-login-better-security-
+git pull origin main
+
+# Option 2: Manual upload
+# Re-upload changed files via Files tab
+
+# Reload your web app
+# Go to Web tab and click Reload button
+```
+
+### 📝 Important Notes
+
+- **Free tier limitations:**
+  - 1 web app
+  - 512 MB disk space
+  - Limited CPU time per day
+  - App "sleeps" after inactivity
+
+- **Performance tips:**
+  - Keep files minimal (remove unused files)
+  - Use efficient database queries
+  - Enable caching where appropriate
+  - Optimize images and static assets
+
+- **Security on PythonAnywhere:**
+  - Always use HTTPS (enabled by default)
+  - Keep `SECRET_KEY` secure in `.env` file
+  - Set `FLASK_DEBUG=False` in production
+  - Regularly update dependencies
+  - Use strong admin passwords
+
+### 🎯 Quick Deployment Checklist
+
+- [ ] PythonAnywhere account created
+- [ ] Files uploaded (via Git or manual)
+- [ ] Virtual environment created and activated
+- [ ] Dependencies installed (`pip install -r requirements.txt`)
+- [ ] `.env` file configured with `SECRET_KEY`
+- [ ] Web app configured in **Web** tab
+- [ ] WSGI file configured with correct paths
+- [ ] Virtual environment path set in web app config
+- [ ] Static files mapping configured
+- [ ] Upload directory created (`mkdir uploads`)
+- [ ] Admin user created (if needed)
+- [ ] Web app reloaded
+- [ ] Application tested and working
+
+### 🆘 Getting Help
+
+- **PythonAnywhere Help:** [help.pythonanywhere.com](https://help.pythonanywhere.com)
+- **Flask Documentation:** [flask.palletsprojects.com](https://flask.palletsprojects.com)
+- **This Project Issues:** [GitHub Issues](https://github.com/anacondy/Papers-login-better-security-/issues)
+
+---
 
 ## 🛡️ Security Best Practices
 
