@@ -3,6 +3,8 @@ const CACHE_NAME = 'papers-portal-v1.1.0'; // Version updated for error page GIF
 const urlsToCache = [
   '/',
   '/offline',
+  '/offline.html',
+  '/404.html',
   '/static/style.css',
   '/static/script.js',
   '/static/error-page.gif'
@@ -54,7 +56,14 @@ self.addEventListener('fetch', event => {
           .catch(error => {
             // Network failed, return offline page for navigation requests
             if (event.request.mode === 'navigate') {
-              return caches.match('/offline');
+              // Try Flask route first, then fall back to static HTML
+              return caches.match('/offline')
+                .then(offlineResponse => {
+                  if (offlineResponse) {
+                    return offlineResponse;
+                  }
+                  return caches.match('/offline.html');
+                });
             }
             throw error;
           });
